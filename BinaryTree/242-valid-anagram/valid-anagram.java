@@ -3,18 +3,20 @@ class Solution {
         if(s.length() != t.length()){
             return false;
         }
-        int alp[] = new int[26];
+        HashMap<Character,Integer> hm = new HashMap<>();
         for(int i=0;i<s.length();i++){
-            alp[s.charAt(i) - 'a'] +=1;
+            hm.put(s.charAt(i),hm.getOrDefault(s.charAt(i),0)+1);
         }
         for(int i=0;i<t.length();i++){
-            alp[t.charAt(i) - 'a'] -= 1;
-        }
-        for(int i=0;i<alp.length;i++){
-            if(alp[i] != 0){
+            if(hm.containsKey(t.charAt(i))){
+                hm.put(t.charAt(i),hm.get(t.charAt(i))-1);
+                if(hm.get(t.charAt(i)) == 0){
+                    hm.remove(t.charAt(i));
+                }
+            }else{
                 return false;
             }
         }
-        return true;
+        return hm.isEmpty();
     }
 }
