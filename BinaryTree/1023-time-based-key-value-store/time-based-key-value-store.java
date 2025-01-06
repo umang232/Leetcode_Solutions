@@ -35,7 +35,7 @@ class TimeMap {
                 if(timestamp == timeVal){
                     return arr.get(mid).val;
                 }else if (timeVal < timestamp){
-                    ret = arr.get(l).val;
+                    ret = arr.get(mid).val;
                     l = mid+1;
                 }else{
                     h = mid-1;
