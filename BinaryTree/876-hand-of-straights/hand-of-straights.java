@@ -1,34 +1,33 @@
 class Solution {
     public boolean isNStraightHand(int[] hand, int groupSize) {
-        if(hand.length%groupSize!=0){
+        if(hand.length%groupSize != 0){
             return false;
         }
-        Arrays.sort(hand);
         HashMap<Integer,Integer> hm = new HashMap<>();
-        for(int i:hand){
-            hm.put(i,hm.getOrDefault(i,0)+1);
+        for(int i=0;i<hand.length;i++){
+            hm.put(hand[i],hm.getOrDefault(hand[i],0)+1);
         }
-        for(int i:hand){
-            if(hm.containsKey(i)){
-                System.out.println(i);
-                hm.put(i,hm.get(i)-1);
-                if(hm.get(i) == 0){
-                    hm.remove(i);
+        Arrays.sort(hand);
+        for(int i=0;i<hand.length;i++){
+            if(hm.containsKey(hand[i])){
+                hm.put(hand[i],hm.get(hand[i])-1);
+                if(hm.get(hand[i]) == 0){
+                    hm.remove(hand[i]);
                 }
-                for(int j=1;j<groupSize;j++){
-                    if(!hm.containsKey(i+j)){
-                        System.out.println("Her"+hm.get(i+j));
+                int k = 1;
+                while(k < groupSize){
+                    if(hm.containsKey(hand[i]+k)){
+                    hm.put(hand[i]+k,hm.get(hand[i]+k)-1);
+                        if(hm.get(hand[i]+k) == 0){
+                            hm.remove(hand[i]+k);
+                        }
+                    }else{
                         return false;
                     }
-                    hm.put(i+j,hm.get(i+j)-1);
-                    if(hm.get(i+j) == 0){
-                        hm.remove(i+j);
-                    }
+                    k+=1;
                 }
-                
-                System.out.println(hm.size());
             }
         }
-        return true;
+        return hm.isEmpty();
     }
 }
