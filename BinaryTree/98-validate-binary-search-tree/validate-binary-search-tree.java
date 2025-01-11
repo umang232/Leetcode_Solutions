@@ -15,19 +15,19 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        if(root == null){
-            return true;
-        }
-        return valid(root,null,null);
-    }
+    return isValidBST(root, null, null);
+}
 
-    public boolean valid(TreeNode root, Integer left, Integer right){
-        if(root == null){
-            return true;
-        }
-        if((left!=null && root.val <= left)||(right!=null && root.val >=right)){
-            return false;
-        }
-        return valid(root.left,left,root.val) && valid(root.right,root.val,right);
+private boolean isValidBST(TreeNode node, Integer min, Integer max) {
+    if (node == null) {
+        return true;
     }
+    // Check if the current node violates the BST property
+    if ((min != null && node.val <= min) || (max != null && node.val >= max)) {
+        return false;
+    }
+    // Recursively validate the left and right subtrees with updated ranges
+    return isValidBST(node.left, min, node.val) && isValidBST(node.right, node.val, max);
+}
+
 }
