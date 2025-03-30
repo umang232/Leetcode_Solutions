@@ -17,7 +17,7 @@ class Solution {
         if(l == null){
             return r;
         }
-        if(r == null){
+        else if(r == null){
             return l;
         }else{
             return root;
