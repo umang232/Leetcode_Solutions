@@ -1,45 +1,60 @@
-import java.util.*;
-
 class LRUCache {
-    private final int capacity;
-    private final HashMap<Integer, Integer> map;
-    private final Deque<Integer> deque;
-
+    Node head = new Node(0,0);
+    Node tail = new Node(0,0);
+    int capacity;
+    Map<Integer, Node> map = new HashMap<>();
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        this.map = new HashMap<>();
-        this.deque = new ArrayDeque<>();
+        head.next = tail;
+        tail.prev = head;
     }
-
+    
     public int get(int key) {
-        if (!map.containsKey(key)) {
+        if(!map.containsKey(key)){
             return -1;
         }
-        // Move the accessed key to the front of the deque
-        deque.remove(key);
-        deque.addFirst(key);
-        return map.get(key);
+        Node node = map.get(key);
+        remove(node);
+        insert(node);
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            remove(map.get(key));
+        }
+        if(map.size() == capacity){
+            remove(tail.prev);
+        }
+        insert(new Node(key,value));
     }
 
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            // Update the value and move the key to the front
-            map.put(key, value);
-            deque.remove(key);
-            deque.addFirst(key);
-        } else {
-            // If the key is new and the cache is at capacity, remove the LRU element
-            if (deque.size() == capacity) {
-                int lruKey = deque.removeLast();
-                map.remove(lruKey);
-            }
-            // Add the new key-value pair
-            map.put(key, value);
-            deque.addFirst(key);
-        }
+    private void remove(Node node){
+        map.remove(node.key);
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void insert(Node node){
+        map.put(node.key,node);
+        Node headnext = head.next;
+        head.next = node;
+        node.prev = head;
+        node.next = headnext;
+        headnext.prev = node;
     }
 }
 
+class Node{
+    int key;
+    int value;
+    Node next;
+    Node prev;
+    Node(int key, int value){
+        this.key = key;
+        this.value = value;
+    }
+}
 
 /**
  * Your LRUCache object will be instantiated and called as such:
