@@ -8,10 +8,8 @@ class MedianFinder {
     }
     
     public void addNum(int num) {
-        if(pqs.size() == 0){
-            pqs.add(num);
-        }else if(pqs.size() <= pql.size()){
-            if(num <= pql.peek()){
+        if(pqs.size() <= pql.size()){
+            if(pqs.size() == 0 || num <= pql.peek()){
                 pqs.add(num);
             }else{
                 pqs.add(pql.remove());
