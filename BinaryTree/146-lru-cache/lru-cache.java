@@ -1,42 +1,50 @@
 class LRUCache {
-    Node head = new Node(0,0);
-    Node tail = new Node(0,0);
+    Node head;
+    Node tail;
     int capacity;
-    Map<Integer, Node> map = new HashMap<>();
+    Map<Integer, Node> cache;
     public LRUCache(int capacity) {
+        head = new Node(0,0);
+        tail = new Node(0,0);
         this.capacity = capacity;
         head.next = tail;
         tail.prev = head;
+        cache = new HashMap<>();
     }
     
     public int get(int key) {
-        if(!map.containsKey(key)){
+        if(!cache.containsKey(key)){
             return -1;
         }
-        Node node = map.get(key);
-        remove(node);
-        insert(node);
-        return node.value;
+        Node current = cache.get(key);
+        remove(current);
+        insert(current);
+        return current.value;
     }
     
     public void put(int key, int value) {
-        if(map.containsKey(key)){
-            remove(map.get(key));
+        if(cache.containsKey(key)){
+            Node exists = cache.get(key);
+            exists.value = value;
+            remove(exists);
+            insert(exists);
+        }else{
+            if(cache.size() == capacity){
+                Node last = tail.prev;
+                remove(last);
+                cache.remove(last.key);
+            }
+            Node newnode = new Node(key,value);
+            insert(newnode);
+            cache.put(key,newnode);
         }
-        if(map.size() == capacity){
-            remove(tail.prev);
-        }
-        insert(new Node(key,value));
     }
 
-    private void remove(Node node){
-        map.remove(node.key);
+    public void remove(Node node){
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
-
-    private void insert(Node node){
-        map.put(node.key,node);
+    public void insert(Node node){
         Node headnext = head.next;
         head.next = node;
         node.prev = head;
@@ -45,11 +53,12 @@ class LRUCache {
     }
 }
 
+
 class Node{
-    int key;
-    int value;
+    int key, value;
     Node next;
     Node prev;
+
     Node(int key, int value){
         this.key = key;
         this.value = value;
