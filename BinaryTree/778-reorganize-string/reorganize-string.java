@@ -1,34 +1,30 @@
 class Solution {
     public String reorganizeString(String s) {
         Map<Character, Integer> freqMap = new HashMap<>();
-        for (char c : s.toCharArray()) {
-            freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
+        for(int i=0;i<s.length();i++){
+            char cur = s.charAt(i);
+            freqMap.put(cur,freqMap.getOrDefault(cur,0) + 1);
         }
-        
-        // Priority queue with custom comparator for descending order
-        PriorityQueue<Map.Entry<Character, Integer>> maxHeap =
-            new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
-        maxHeap.addAll(freqMap.entrySet());
-        
-        StringBuilder result = new StringBuilder();
-        Queue<Map.Entry<Character, Integer>> waitQueue = new LinkedList<>();
-        
-        while (!maxHeap.isEmpty()) {
-            Map.Entry<Character, Integer> current = maxHeap.poll();
-            result.append(current.getKey());
-            
-            current.setValue(current.getValue() - 1);
-            waitQueue.offer(current);
-            
-            if (waitQueue.size() > 1) {
-                Map.Entry<Character, Integer> front = waitQueue.poll();
-                if (front.getValue() > 0) {
-                    maxHeap.offer(front);
-                }
-            }
+        PriorityQueue<Character> maxHeap = new PriorityQueue<>((a,b) -> freqMap.get(b) - freqMap.get(a));
+        maxHeap.addAll(freqMap.keySet());
+
+        StringBuilder res = new StringBuilder();
+        while(maxHeap.size() >=2 ){
+            char char1 = maxHeap.poll();
+            char char2 = maxHeap.poll();
+            res.append(char1);
+            res.append(char2);
+            freqMap.put(char1, freqMap.get(char1) - 1);
+            freqMap.put(char2, freqMap.get(char2) - 1);
+
+            if(freqMap.get(char1) > 0) maxHeap.offer(char1);
+            if(freqMap.get(char2) > 0) maxHeap.offer(char2);
         }
-        
-        return result.length() == s.length() ? result.toString() : "";
-    
+        if(!maxHeap.isEmpty()){
+            char ch = maxHeap.poll();
+            if(freqMap.get(ch) > 1) return "";
+            res.append(ch);
+        }
+        return res.toString();
     }
 }
