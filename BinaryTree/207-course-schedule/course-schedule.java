@@ -1,36 +1,32 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> adj = new ArrayList<>();
-        for(int i =0;i<numCourses;i++){
-            adj.add(new ArrayList<>());
+        List<Integer>[] adj = new ArrayList[numCourses];
+        for(int i=0;i<numCourses;i++){
+            adj[i] = new ArrayList<>();
         }
+        int[] indegree = new int[numCourses];
         for(int i=0;i<prerequisites.length;i++){
-            adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
+            adj[prerequisites[i][1]].add(prerequisites[i][0]);
+            indegree[prerequisites[i][0]]++;
         }
-        int[] visited = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            if (visited[i] == 0) {
-                if (isCyclic(adj, visited, i)) {
-                    return false;
-                }
-            }
-        }
-        return true;
 
-    }
-    private boolean isCyclic(List<List<Integer>> adj, int[] visited, int i){
-        if(visited[i] == 2){
-            return true;
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i] == 0){
+                queue.offer(i);
+            }
         }
-        visited[i] = 2;
-        for(int j=0;j<adj.get(i).size();j++){
-            if (visited[adj.get(i).get(j)] != 1) {
-                if(isCyclic(adj,visited,adj.get(i).get(j))){
-                    return true;
+        int count = 0;
+        while(!queue.isEmpty()){
+            int course = queue.poll();
+            count++;
+            for(int next :adj[course]){
+                indegree[next]--;
+                if(indegree[next] == 0){
+                    queue.offer(next);
                 }
             }
         }
-        visited[i] = 1;
-        return false;
-    }
+        return count == numCourses;
+    }   
 }
