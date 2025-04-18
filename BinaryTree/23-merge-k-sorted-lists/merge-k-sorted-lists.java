@@ -10,60 +10,43 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if(lists == null || lists.length == 0){
-            return null;
-        }
-        while(lists.length > 1){
-            List<ListNode> temp = new ArrayList<>();
-            for(int i=0;i<lists.length;i+=2){
+        if (lists == null || lists.length == 0) return null;
+
+        // Iteratively reduce the list count by merging in pairs
+        while (lists.length > 1) {
+            List<ListNode> merged = new ArrayList<>();
+
+            for (int i = 0; i < lists.length; i += 2) {
                 ListNode l1 = lists[i];
-                ListNode l2 = i+1 < lists.length? lists[i+1] : null;
-                temp.add(mergeTwoLists(l1,l2));
+                ListNode l2 = (i + 1 < lists.length) ? lists[i + 1] : null;
+                merged.add(mergeTwoLists(l1, l2));
             }
-            lists = temp.toArray(new ListNode[0]);
+
+            // Convert back to array for the next round
+            lists = merged.toArray(new ListNode[0]);
         }
+
         return lists[0];
-        
     }
-    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        if(list1 == null){
-            return list2;
-        }
-        if(list2 == null){
-            return list1;
-        }
-        ListNode temp1 = list1;
-        ListNode temp2 = list2;
-        ListNode temp3 = null;
-        if(temp1.val < temp2.val){
-            temp3 = temp1;
-            temp1 = temp1.next;
-        }
-        else{
-            temp3 = temp2;
-            temp2 = temp2.next;
-        }
-       ListNode ret = temp3; 
-        while(temp1 != null && temp2 != null){
-            if(temp1.val < temp2.val){
-                temp3.next = temp1;
-                temp1 = temp1.next;
-            }else{
-                temp3.next = temp2;
-                temp2 = temp2.next;
+
+    private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
             }
-            temp3 = temp3.next;
+            curr = curr.next;
         }
-        while(temp1!=null){
-            temp3.next = temp1;
-            temp1 = temp1.next;
-            temp3 = temp3.next;
-        }
-        while(temp2!=null){
-            temp3.next = temp2;
-            temp2 = temp2.next;
-            temp3 = temp3.next;
-        }
-        return ret;
+
+        // Attach the remaining list
+        curr.next = (l1 != null) ? l1 : l2;
+
+        return dummy.next;
     }
 }
