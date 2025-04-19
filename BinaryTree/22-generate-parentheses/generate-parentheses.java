@@ -1,31 +1,28 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
 class Solution {
+    List<String> result = new ArrayList<>();
     Stack<Character> st = new Stack<>();
-    ArrayList<String> ans = new ArrayList<>();
     public List<String> generateParenthesis(int n) {
-        gen(0,0,n);
-        return ans;
+       gen(0,0,n);
+       return result; 
     }
-    public void gen(int s,int e,int n){
-        if(s == e && e == n){
+
+    public void gen(int start, int end, int n){
+        if(start == end && end == n){
             Iterator it = st.iterator();
             String temp = "";
             while(it.hasNext()){
-                temp = temp + it.next();
+                temp+=it.next();
             }
-            ans.add(temp);
+            result.add(temp);
         }
-        if(s < n){
+        if(start < n){
             st.push('(');
-            gen(s+1,e,n);
+            gen(start+1,end,n);
             st.pop();
         }
-        if(e<s){
+        if(end < start){
             st.push(')');
-            gen(s,e+1,n);
+            gen(start,end+1,n);
             st.pop();
         }
     }
