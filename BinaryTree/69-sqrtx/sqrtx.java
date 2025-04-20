@@ -1,17 +1,22 @@
 class Solution {
     public int mySqrt(int x) {
-        int l = 0;
-        int r = x;
-        while(l<=r){
-            int m = l + (r-l)/2;
-            if(m*m == x){
-                return m;
-            }else if((long) m*m > (long)x){
-                r = m-1;
-            }else{
-                l =m+1;
+        if (x < 2) return x;
+
+        int left = 1, right = x, ans = 0;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if ((long)mid * mid == x) {
+                return mid;
+            } else if ((long)mid * mid < x) {
+                ans = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
-        return Math.round(r);
+
+        return ans;
     }
 }
