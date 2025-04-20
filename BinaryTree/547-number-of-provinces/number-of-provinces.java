@@ -9,6 +9,7 @@ class Solution {
             for (int j = 0; j < n; j++) {
                 if (isConnected[i][j] == 1 && i != j) {     
                     adjMatrix.get(i).add(j);
+                    adjMatrix.get(j).add(i);
                 }
             }
         }
