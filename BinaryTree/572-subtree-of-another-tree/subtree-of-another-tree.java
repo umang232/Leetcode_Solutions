@@ -4,50 +4,29 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ *     TreeNode(int x) { val = x; }
  * }
  */
 class Solution {
-    boolean isSub = false;
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        if(subRoot == null){
-            return true;
-        }
-        if(root == null){
-            return isSub;
-        }
-
-        if(root.val == subRoot.val){
-            boolean ans = isSameTree(root,subRoot);
-            System.out.println(ans);
-            if(isSub != true){
-                isSub = ans;
-            }
-        }
-        if(isSub){
-            return true;
-        }else{
-            return isSubtree(root.left,subRoot) || isSubtree(root.right,subRoot);
-    }
-    }
-
-    public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p == null && q == null){
-            return true;
-        }
-        if(p == null || q == null){
+        if (root == null) {
             return false;
         }
-        if(p.val!=q.val){
+        if (isSameTree(root, subRoot)) {
+            return true;
+        }
+        return isSubtree(root.left, subRoot)
+            || isSubtree(root.right, subRoot);
+    }
+    
+    private boolean isSameTree(TreeNode s, TreeNode t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null || s.val != t.val) {
             return false;
         }
-        
-        return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
+        return isSameTree(s.left, t.left)
+            && isSameTree(s.right, t.right);
     }
 }
