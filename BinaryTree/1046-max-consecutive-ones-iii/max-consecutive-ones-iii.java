@@ -3,19 +3,14 @@ class Solution {
         int left = 0;
         int maxL = 0;
         int temp = 0;
-        int a = k;
         for(int i=0;i<nums.length;i++){
-            
-            // if(nums[i] == 0 && temp == 0){
-            //     left++;
-            // }
             if(nums[i] == 1){
                 temp ++;
                 maxL = Math.max(maxL,temp);
-            }else if(nums[i] == 0 && a > 0){
+            }else if(nums[i] == 0 && k > 0){
                 temp ++;
                 maxL = Math.max(maxL,temp);
-                a--;
+                k--;
             
             }else{
                 while(nums[left] != 0){
