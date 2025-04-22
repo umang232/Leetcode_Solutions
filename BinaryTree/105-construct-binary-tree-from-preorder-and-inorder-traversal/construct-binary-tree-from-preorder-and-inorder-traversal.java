@@ -20,17 +20,17 @@ class Solution {
         for(int i =0;i<inorder.length;i++){
             inorderMap.put(inorder[i],i);
         }
-        return construct(preorder,inorder,0,inorder.length-1);
+        return construct(preorder,0,inorder.length-1);
     }
-    private TreeNode construct(int[] preorder, int[] inorder, int s, int e){
+    private TreeNode construct(int[] preorder, int s, int e){
         if(s>e){
             return null;
         }
         int rootVal = preorder[preorderIndex++];
         TreeNode root = new TreeNode(rootVal);
         int index = inorderMap.get(rootVal);
-        root.left = construct(preorder,inorder,s,index-1);
-        root.right = construct(preorder,inorder,index+1,e);
+        root.left = construct(preorder,s,index-1);
+        root.right = construct(preorder,index+1,e);
         return root;
     }
 }
