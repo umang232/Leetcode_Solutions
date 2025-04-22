@@ -26,7 +26,6 @@ class Solution {
                 temp = (i-left)+1;
                 maxL = Math.max(maxL,temp);
             }
-            System.out.println(i+" "+nums[i]+" "+temp+" "+a+" "+left);
         }
         return Math.max(maxL,temp);
     }
