@@ -5,11 +5,10 @@ class Solution {
             return nums.length;
         }
         for(int i=2;i<nums.length;i++){
-            if(nums[i] == nums[k] && nums[i] == nums[k-1]){
+            if(nums[i] == nums[k-1]){
                 continue;
             }else{    
-                k++;
-                nums[k] = nums[i];
+                nums[++k] = nums[i];
             }
         }
         return k+1;
