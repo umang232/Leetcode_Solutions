@@ -7,7 +7,7 @@ class Solution {
             jobs[i][1] = endTime[i];
             jobs[i][2] = profit[i];
         }
-        Arrays.sort(jobs, Comparator.comparingInt(a-> a[1]));
+        Arrays.sort(jobs, (a,b)-> a[1]-b[1]);
         int dp[] = new int[n];
         dp[0] = jobs[0][2];
         for(int i=1;i<n;i++){
