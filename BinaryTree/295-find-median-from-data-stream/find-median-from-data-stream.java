@@ -1,38 +1,38 @@
 class MedianFinder {
-    PriorityQueue<Integer> pqs;
-    PriorityQueue<Integer> pql;
+    PriorityQueue<Integer> pqSmall;
+    PriorityQueue<Integer> pqLarge;
 
     public MedianFinder() {
-        pqs = new PriorityQueue<>(Collections.reverseOrder());
-        pql = new PriorityQueue<>();
+        pqSmall = new PriorityQueue<>(Collections.reverseOrder());
+        pqLarge = new PriorityQueue<>();
     }
     
     public void addNum(int num) {
-        if(pqs.size() <= pql.size()){
-            if(pqs.size() == 0 || num <= pql.peek()){
-                pqs.add(num);
+        if(pqSmall.size() <= pqLarge.size()){
+            if(pqSmall.size() == 0 || num <= pqLarge.peek()){
+                pqSmall.add(num);
             }else{
-                pqs.add(pql.remove());
-                pql.add(num);
+                pqSmall.add(pqLarge.remove());
+                pqLarge.add(num);
             }
         }else{
-            if(num >= pqs.peek()){
-                pql.add(num);
+            if(num >= pqSmall.peek()){
+                pqLarge.add(num);
             }else{
-                pql.add(pqs.remove());
-                pqs.add(num);
+                pqLarge.add(pqSmall.poll());
+                pqSmall.add(num);
             }
         }
     }
     
     public double findMedian() {
-        if(pqs.size() == pql.size()){
-            int sum = pqs.peek()+pql.peek();
-            return (double) sum / 2;
-        }else if(pqs.size() > pql.size()){
-            return pqs.peek();
+        if(pqSmall.size() == pqLarge.size()){
+            int sum = pqSmall.peek() + pqLarge.peek();
+            return (double) sum/2;
+        }else if(pqSmall.size() > pqLarge.size()){
+            return pqSmall.peek();
         }else{
-            return pql.peek();
+            return pqLarge.peek();
         }
     }
 }
