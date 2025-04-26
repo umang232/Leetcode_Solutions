@@ -9,7 +9,12 @@ class Solution {
             i++;
             j++;
         }
-        result += (i != word1.length()) ? word1.substring(i) : word2.substring(j);
+        if(i != word1.length()){
+            result += word1.substring(i);
+        }
+        if( j != word2.length()){
+            result+= word2.substring(j);
+        }
         return result;
     }
 }
