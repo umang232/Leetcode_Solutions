@@ -9,10 +9,10 @@ class MedianFinder {
     
     public void addNum(int num) {
         if(pqSmall.size() <= pqLarge.size()){
-            if(pqSmall.size() == 0 || num <= pqLarge.peek()){
+            if(pqSmall.isEmpty() || num <= pqLarge.peek()){
                 pqSmall.add(num);
             }else{
-                pqSmall.add(pqLarge.remove());
+                pqSmall.add(pqLarge.poll());
                 pqLarge.add(num);
             }
         }else{
@@ -26,13 +26,12 @@ class MedianFinder {
     }
     
     public double findMedian() {
-        if(pqSmall.size() == pqLarge.size()){
-            int sum = pqSmall.peek() + pqLarge.peek();
-            return (double) sum/2;
-        }else if(pqSmall.size() > pqLarge.size()){
-            return pqSmall.peek();
+        if(pqSmall.size() > pqLarge.size()){
+            return (double) pqSmall.peek();
+        }else if(pqSmall.size() < pqLarge.size()){
+            return (double) pqLarge.peek();
         }else{
-            return pqLarge.peek();
+            return (double)(pqSmall.peek()+pqLarge.peek())/2.0;
         }
     }
 }
