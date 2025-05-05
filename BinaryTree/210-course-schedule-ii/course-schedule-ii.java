@@ -3,45 +3,42 @@ class Solution {
         if(numCourses == 1){
             return new int[] {0};
         }
-        List<Integer>[] adj = new ArrayList[numCourses];
-        for(int i =0;i<numCourses;i++){
-            adj[i] = new ArrayList<>();
+        List<List<Integer>> adjList = new ArrayList<>();
+        for(int i=0;i<numCourses;i++){
+            adjList.add(new ArrayList<>());
         }
-
-        int indegree[] = new int[numCourses];
-
-        for(int pre[] : prerequisites){
-            adj[pre[1]].add(pre[0]);
+        int[] indegree = new int[numCourses];
+        for(int pre[] :prerequisites){
+            adjList.get(pre[1]).add(pre[0]);
             indegree[pre[0]]++;
         }
-        int result[] = new int[numCourses];
         Queue<Integer> queue = new LinkedList<>();
-        for(int i=0;i<numCourses;i++){
-            if(indegree[i] == 0){
-                queue.offer(i);
-            }
+        for(int i=0;i<numCourses; i++){
+            if(indegree[i] == 0) queue.offer(i);
         }
-        int j=0;
+        int[] result = new int[numCourses];
+        int j = 0;
         while(!queue.isEmpty()){
-            int s = queue.size();
-            for(int i=0;i<s;i++){
+            int size = queue.size();
+            for(int i=0;i<size;i++){
                 int course = queue.poll();
                 result[j] = course;
                 j++;
-                for(Integer dependency : adj[course]){
-                    indegree[dependency]--;
-                    if(indegree[dependency] == 0){
-                        queue.offer(dependency);
+                for(int nei: adjList.get(course)){
+                    if(indegree[nei] > 0){
+                        indegree[nei]--;
+                        if(indegree[nei] == 0){
+                            queue.offer(nei);
+                        }
                     }
                 }
             }
         }
-        for(int i=0;i<numCourses;i++){
-            if(indegree[i] > 0){
+        for(int k = 0;k<numCourses;k++){
+            if(indegree[k] > 0){
                 return new int[] {};
             }
         }
         return result;
-
     }
 }
