@@ -1,18 +1,14 @@
 class Solution {
     public int rob(int[] nums) {
-        int [] cost = new int[nums.length];
-        int n = nums.length;
-        
-        if(n == 1) return nums[0];
-        if( n== 2){
-            return Math.max(nums[1], nums[0]);
+        int[]  dp = new int[nums.length];
+        if(nums.length == 1){
+            return nums[0];
         }
-        cost[n-1] =nums[n-1];
-        cost[n-2] = nums[n-2];
-        cost[n-3] = nums[n-1]+nums[n-3];
-        for(int i=n-4;i>=0;i--){
-            cost[i] = nums[i] + Math.max(cost[i+2],cost[i+3]);
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0],nums[1]);
+        for(int i=2;i<nums.length;i++){
+            dp[i] = Math.max(dp[i-1], nums[i]+dp[i-2]);
         }
-        return Math.max(cost[0],cost[1]);
+        return dp[nums.length-1];
     }
 }
