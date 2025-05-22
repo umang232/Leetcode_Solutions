@@ -6,16 +6,13 @@ class Solution {
         if(n == 2){
             return 2;
         }
-        int [] arr = new int[n];
-        int jump1 = 1;
-        int jump2 = 2;
-        int i = 2;
-        while(i<=n-1){
-            int temp = jump1 + jump2;
-            i++;
-            jump1 = jump2;
-            jump2 = temp;
+        int fir = 1;
+        int sec = 2;
+        for(int i=2;i<n;i++){
+            int temp = fir+sec;
+            fir = sec;
+            sec = temp;
         }
-        return jump2;
+        return sec;
     }
 }
